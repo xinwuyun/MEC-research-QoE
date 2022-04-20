@@ -20,10 +20,10 @@ QoE_list = [1.5, 4, 5]
 max_level = 3
 min_level = 1
 
-
+# 初始定义最大容量
 # MEC服务器类：S = [id, 该服务器可以服务的用户数量Cj, X坐标, Y坐标, 覆盖半径Rj, 分配用户目录]
 class Server:
-    def __init__(self, id, Cj, a, b, Rj):
+    def __init__(self, id, Cj, a, b, Rj, maxCapacity):
         # 服务器编号
         self.id = id
         # 服务器可以服务的用户的数量
@@ -36,6 +36,25 @@ class Server:
         self.Rj = Rj
         # 服务器现在服务的用户列表—— u_id 中存储的是用户的id信息
         self.users = []
+        # 服务器资源上限
+        self.maxCapacity = maxCapacity
+        # 服务器现有资源
+        self.capacity = maxCapacity
+    def isAvailable(self, user):
+        w_vector = W_list[user.w]
+        for i in range(len(w_vector)):
+            if(self.capacity[i] < w_vector[i]):
+                return False
+        return True
+    def releaseUser(self, user):
+        w_vector = W_list[user.w]
+        for i in range(len(w_vector)):
+            self.capacity[i] += w_vector[i]
+    def addUser(self, user):
+        w_vector = W_list[user.w]
+        for i in range(len(w_vector)):
+            self.capacity[i] -= w_vector[i]
+
 
 # 用户类： U = [用户id, 用户速度, 用户X坐标, 用户Y坐标, 用户移动方向, 用户被分配的站点, 用户的适应值, 用户的状态]
 class User:
@@ -88,7 +107,7 @@ def get_M(user, server):
 # 判断某个该用户能否被分配给某个站点
 def can_be_allocated(user, station):
     dis = get_xy_distance(user.x, user.y, station.x, station.y)
-    if dis <= station.Rj and station.Cj > 0:    #该站点可被分配
+    if dis <= station.Rj and station.isAvailable(user):    #该站点可被分配
         return True
     return False
 
@@ -154,8 +173,7 @@ def handle_unservable(station):
         user.station = None
         user.status = 0
         user.M = -999999
-        station.users.remove(user)
-        station.Cj += 1
+        station.releaseUser(user)
 
 # # # # # # # # # # Mobility-Aware Allocation # # # # # # # # # #
 def mobility_aware_allocation(unallocated_list):
@@ -179,8 +197,7 @@ def mobility_aware_allocation(unallocated_list):
             continue
         if can_be_allocated(user, s):   # 可以分配，那么直接分配, 不能分配则不分配
             user.status = 1             # 分配后状态修改
-            s.Cj = s.Cj - 1             # 容量减1
-            s.users.append(user)        # 将用户放入列表
+            s.addUser(user)
         else:                           # M和station恢复成未分配的状态
             user.station = None
             user.M = 0  
@@ -218,20 +235,16 @@ def mobility_aware_migration(o, unallocated_list, users_can_out):
             user.M = M
             user.station = s
             if s is None:
-                o.Cj += 1
-                o.users.remove(user)
+                o.releaseUser(user)
                 continue
-            s.users.append(user)    # 重分配
-            s.Cj -= 1               # 容量-1
-            o.users.remove(user)    # 移出该用户
-            o.Cj += 1               # 不再分配给该用户，容量增加
+            s.addUser(user)
+            o.releaseUser(user)         # 移出该用户 不再分配给该用户，容量增加
             reallocated_num += 1    # 重分配次数+1
     for user in unallocated_list:
         if user in migration_plan and can_be_allocated(user, o):
             user.station = o
             user.status = 1         # 修改状态为已分配
-            o.Cj -= 1
-            o.users.append(user)
+            o.addUser(user)
     return reallocated_num
 
 # ************************ MobMig算法 ***************************
