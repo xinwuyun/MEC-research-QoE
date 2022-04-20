@@ -23,11 +23,11 @@ min_level = 1
 # 初始定义最大容量
 # MEC服务器类：S = [id, 该服务器可以服务的用户数量Cj, X坐标, Y坐标, 覆盖半径Rj, 分配用户目录]
 class Server:
-    def __init__(self, id, Cj, a, b, Rj, maxCapacity):
+    def __init__(self, id, a, b, Rj, maxCapacity):
         # 服务器编号
         self.id = id
         # 服务器可以服务的用户的数量
-        self.Cj = Cj
+        # self.Cj = Cj
         # 服务器的经度
         self.x = a
         # 服务器的纬度
@@ -37,21 +37,26 @@ class Server:
         # 服务器现在服务的用户列表—— u_id 中存储的是用户的id信息
         self.users = []
         # 服务器资源上限
-        self.maxCapacity = maxCapacity
+        self.maxCapacity = maxCapacity[:]
         # 服务器现有资源
-        self.capacity = maxCapacity
+        self.capacity = maxCapacity[:]
     def isAvailable(self, user):
-        w_vector = W_list[user.w]
+        w_vector = W_list[user.W]
         for i in range(len(w_vector)):
             if(self.capacity[i] < w_vector[i]):
                 return False
         return True
+    def isOverLoad(self):
+        for i in self.capacity:
+            if i <= 0:
+                return False
+        return True
     def releaseUser(self, user):
-        w_vector = W_list[user.w]
+        w_vector = W_list[user.pW]
         for i in range(len(w_vector)):
             self.capacity[i] += w_vector[i]
     def addUser(self, user):
-        w_vector = W_list[user.w]
+        w_vector = W_list[user.W]
         for i in range(len(w_vector)):
             self.capacity[i] -= w_vector[i]
 
@@ -76,9 +81,13 @@ class User:
         # 分配状态
         self.status = 0
         # QoS相关参数
+        self.postw = 0
         self.W = 0
         self.H = h
         self.L = l
+    def update_QoS(self):
+        self.pW = self.W
+        self.L, self.H, self.W = sorted(np.random.choice(len(W_list), 3, replace=False))
 
 # xy坐标计算距离dij
 def get_xy_distance(x1, y1, x2, y2):
@@ -251,7 +260,7 @@ def mobility_aware_migration(o, unallocated_list, users_can_out):
 def mobMig():
     reallocated_num = 0
     for station in station_list:
-        if station.Cj == 0:         # 过载的服务器
+        if station.isOverLoad():         # 过载的服务器
             reallocated_list = get_removable(station)
             unallocated_list = get_unallocated(station)
             reallocated_num += mobility_aware_migration(station, unallocated_list, reallocated_list)
@@ -324,7 +333,7 @@ def get_next_location(user, theta, time):
 def update_location(time):
     for user in user_list:
         user.x, user.y = get_next_location(user, user.theta, time)
-        max_trail = 10
+        max_trail = 0
         while(max_trail > 0):
             next_theta = np.random.random()*2*np.pi
             next_x, next_y = get_next_location(user, next_theta, time)
@@ -350,7 +359,7 @@ def get_XY(data):
     def hav(theta):
         s = math.sin(theta / 2)
         return s * s
-    def get_distance_hav(lat0, lng0, lat1, lng1):
+    def get_distance_hav(lat0, lng0, lat1, lng1): 
         EARTH_RADIUS=6371
         "用haversine公式计算球面两点间的距离。"
         # 经纬度转换成弧度
@@ -418,27 +427,24 @@ def QoE_cal():
 def get_gamma(level):
     return sum(W_list[int(level-1)])/4
 
-# 得到beta值
+# 得到beta值 
 def get_beta(user):
     Hi = get_gamma(user.H)
     Li = get_gamma(user.L)
     return (Hi - Li)/2
 
 # 对应时间间隔更新user的H和L
-def update_H_L():
-    def get_low(high):
-        return int(round(random()*(high - 1) + 1))
+def update_user_qos():
     for user in user_list:
-        user.H = int(round(random()*(max_level - min_level) + 1))
-        user.L = get_low(user.H)
+        user.update_QoS()
         
 
-station_data = pd.read_csv("./data/server_la_lng_r200-400_capicity200.csv")
+station_data = pd.read_csv("./data/server_la_lng_r200-400.csv")
 station_number = 50
 station_data = station_data.sample( n = station_number, random_state = None)     # 样本为50个站点
 
 user_data = pd.read_csv("./data/行人_id_速度_角度.csv")
-user_number = 200
+user_number = 50
 user_data = user_data.sample(n = user_number, random_state = None)          # 样本为50个用户
 
 # 用户的经纬度信息和station的经纬度合并为一个dataframe
@@ -449,10 +455,13 @@ user_data['X'] = xy['X'].iloc[len(station_data):len(xy)]
 station_data['Y'] = xy['Y'].iloc[:len(station_data)]
 user_data['Y'] = xy['Y'].iloc[len(station_data):len(xy)]
 
+maxQos = W_list[-1]
+maxCapacity = [i*user_number/station_number for i in maxQos]
+
 # 将读入的station信息传入station_list中
 for i in range(station_data.shape[0]):
     temp = station_data.iloc[i]
-    station_list.append(Server(temp["SITE_ID"], temp["capacity"], temp["X"], temp["Y"], temp["r"]))
+    station_list.append(Server(temp["SITE_ID"], temp["X"], temp["Y"], temp["r"], maxCapacity=maxCapacity))
 
 # 将读取的用户信息传入user_list中
 for i in range(user_data.shape[0]):
@@ -478,7 +487,7 @@ for time in time_list:
     res = [time, allocated_rate, reallocated_num, total_user, QoE]          # 结果列表
     result.append(res)                                                      # 结果集合
     if time % 25 == 0:
-        update_H_L()                                                            # 每隔25s更新用户的H和L值
+        update_user_qos()                                                           # 每隔25s更新用户的H和L值
 
 result_data = pd.DataFrame(result, columns = ["时刻t/s", "用户覆盖率", "重分配次数/次", "已分配用户数", "QoE值"])
 outputpath = "./result/" + str(user_number) + "_users_result.csv"
