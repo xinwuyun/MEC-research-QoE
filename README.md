@@ -10,7 +10,7 @@
 
 以程序包的`python实现`文件夹为根目录，其中文件目录如下：
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220411170631776.png" alt="image-20220411170631776" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220411170631776.png" alt="image-20220411170631776" style="zoom:50%;" />
 
 <center><strong>图1：程序包目录结构</strong></center>
 
@@ -20,7 +20,7 @@
 
 原始数据指用于生成站点的服务范围$R_j$，容量$C_j$，用户移动速度$speed$，初始运动角度$\theta$，初始$QoS$等级的原始数据文件，在目录`python实现/data`目录下，包括`site-optus-melbCBD.csv`和`users-melbcbd-generated.csv`。
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410200232445.png" alt="image-20220410200232445" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410200232445.png" alt="image-20220410200232445" style="zoom:67%;" />
 
 <center><strong>图2：data文件夹目录结构</strong></center>
 
@@ -40,13 +40,13 @@
 
 - 文件1：MEC的**服务站经纬度**，其他的如NAME等列都是不必要的
 
-  <img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410191208941.png" alt="image-20220410191208941" style="zoom: 50%;" />
+  <img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410191208941.png" alt="image-20220410191208941" style="zoom: 50%;" />
 
   <center><strong>图3：服务站基本信息要求</strong></center>
 
 - 文件2：**用户的经纬度**
 
-  <img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410192435622.png" alt="image-20220410192435622" style="zoom:50%;" />
+  <img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410192435622.png" alt="image-20220410192435622" style="zoom:50%;" />
 
   <center><strong>图4：用户基本信息要求</strong></center>
 
@@ -65,7 +65,7 @@ data目录下的其他文件为基于上述两个文件通过**随机算法（1.
   | 含义 | 站点的标号  | 纬度       | 经度        | 信号范围（服务范围）       | 最大可服务人数              |
   | 值域 | 从1开始整数 | `-`        | `-`         | $200\sim 400 $范围内随机数 | $7$(可随机更改为其他合理值) |
 
-  ![image-20220410194018149](https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410194018149.png)
+  ![image-20220410194018149](https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410194018149.png)
 
   <center><strong>图5：经过随机算法后产生的完整服务器信息</strong></center>
 
@@ -80,7 +80,7 @@ data目录下的其他文件为基于上述两个文件通过**随机算法（1.
   | 含义 | 用户的标号  | 纬度       | 经度         | 用户的初始运动角度 | 速度大小                                                     | 初始最高QoS等级           | 初始最低QoS等级           |
   | 值域 | 从1开始整数 | `-`        | `-`          | $(0,2\pi)$         | 车辆：占20%，范围为2.68224m/s~10.72896m/s<br />行人：占80%，范围为0.44704m/s~1.34112m/s | 1或2或3（等级范围可扩大） | 1或2或3（等级范围可扩大） |
 
-  ![image-20220410195019874](https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410195019874.png)
+  ![image-20220410195019874](https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410195019874.png)
 
   <center><strong>图6：经过随机算法产生的完整用户信息</strong></center>
 
@@ -98,7 +98,7 @@ $$
 $$
 目录结果如下，下面对两类结果进行说明。
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220411172036054.png" alt="image-20220411172036054" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220411172036054.png" alt="image-20220411172036054" style="zoom:50%;" />
 
 <center><strong>图7：主程序运行结果result的目录结构</strong></center>
 
@@ -108,7 +108,7 @@ $$
 
 以50人时的结果`50_users_result.csv`为例，说明输出数据的信息：
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410200556758.png" alt="image-20220410200556758" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410200556758.png" alt="image-20220410200556758" style="zoom:50%;" />
 
 <center><strong>图8：输出结果信息</strong></center>
 
@@ -140,11 +140,11 @@ $$
 
 数据处理文件中的结果即是下图中需要的针对mobmig算法的不同用户数量时的各值指标。
 
-![image-20220411171222344](https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220411171222344.png)
+![image-20220411171222344](https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220411171222344.png)
 
 表格内容如下，含义直接，不再赘述
 
-![image-20220411172404038](https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220411172404038.png)
+![image-20220411172404038](https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220411172404038.png)
 
 <center><strong>图9：对比算法需要最终数据</strong></center>
 
@@ -193,7 +193,7 @@ $$
 
 按照论文`Panda2020_Chapter_DynamicEdgeUserAllocationWithU.pdf`中描述的实验设置，将服务范围设置为200~400之间的随机数。数值可在`server_info_generator.ipynb`文件中修改：
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410203026940.png" alt="image-20220410203026940" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410203026940.png" alt="image-20220410203026940" style="zoom:50%;" />
 
 <center><strong>图10：对服务范围和服务人数两参数的修改</strong></center>
 
@@ -207,7 +207,7 @@ $$
 
 用户比例为80%的行人与20%的车辆，二者具有不同的速度范围。若要更改车辆和行人的比例，可在`user_info_gennerator.ipynb`文件中如下图处修改：
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410204606335.png" alt="image-20220410204606335" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410204606335.png" alt="image-20220410204606335" style="zoom:50%;" />
 
 <center><strong>图11：对用户中车辆和行人的比例的修改</strong></center>
 
@@ -215,7 +215,7 @@ $$
 
 初始运动角度为$(0, 2\pi)$，该参数用于随机漫步使用，可以修改但没必要。
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410203909241.png" alt="image-20220410203909241" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410203909241.png" alt="image-20220410203909241" style="zoom:50%;" />
 
 <center><strong>图12：对用户初始运动角度的修改</strong></center>
 
@@ -229,7 +229,7 @@ $$
 
 若修改可在`user_info_gennerator.ipynb`文件中如下图处修改：
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410204046276.png" alt="image-20220410204046276" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410204046276.png" alt="image-20220410204046276" style="zoom:50%;" />
 
 <center><strong>图13：对用户初始速度大小的修改</strong></center>
 
@@ -241,7 +241,7 @@ QoS等级按照论文`Panda2020...`进行设置，与论文中相同，设置了
 
   在该文件下修改用户的最低等级和最高等级
 
-  <img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410205020160.png" alt="image-20220410205020160" style="zoom:50%;" />
+  <img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410205020160.png" alt="image-20220410205020160" style="zoom:50%;" />
 
   <center><strong>图14：对用户QoS等级数的修改</strong></center>
 
@@ -249,7 +249,7 @@ QoS等级按照论文`Panda2020...`进行设置，与论文中相同，设置了
 
   在该文件下修改等级的具体的向量的四个维度信息或者是新增/减少向量
 
-  <img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410205332319.png" alt="image-20220410205332319" style="zoom:50%;" />
+  <img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410205332319.png" alt="image-20220410205332319" style="zoom:50%;" />
 
   <center><strong>图15：对用户QoS向量的修改</strong></center>
 
@@ -259,7 +259,7 @@ QoS等级按照论文`Panda2020...`进行设置，与论文中相同，设置了
 
 `mobMig`中需要修改，以多次运行得到结果的参数是用户的数量user_number，该值在50到200间以50为单位变化，若要修改user_number，在主程序的430行，如图15修改即可。**改为50,100,150,200后可分别运行，运行结果存储在result目录下以50,100,150,200开头的xx_users_result.csv文件中**，详见图7：主程序运行结果result的目录结构
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410205848183.png" alt="image-20220410205848183" style="zoom:67%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410205848183.png" alt="image-20220410205848183" style="zoom:67%;" />
 
 <center><strong>图16：对用户数量的修改</strong></center>
 
@@ -267,7 +267,7 @@ QoS等级按照论文`Panda2020...`进行设置，与论文中相同，设置了
 
 迭代时间不建议修改，按照5s改变随机漫步的方向较为合适。若修改，那么修改为25的因数：1,5,25，否则程序出现问题。
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220410210431358.png" alt="image-20220410210431358" style="zoom: 80%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220410210431358.png" alt="image-20220410210431358" style="zoom: 80%;" />
 
 <center><strong>图17：对迭代时间间隔的修改</strong></center>
 
@@ -277,7 +277,7 @@ QoS等级按照论文`Panda2020...`进行设置，与论文中相同，设置了
 
 该程序若可能有需要调整的参数，那么除了提取数据的间隔：25s外无需要修改的地方。若需要修改此间隔，在结果数据处理程序`result_handle.ipynb`中如下图处修改变量`time_slot`为其他值即可
 
-<img src="https://gitee.com/sun-yunqi/img/raw/master/pictureStore/image-20220411170201210.png" alt="image-20220411170201210" style="zoom:50%;" />
+<img src="https://cdn.jsdelivr.net/gh/Holmes233666/gitee-image@main/pictureStore/image-20220411170201210.png" alt="image-20220411170201210" style="zoom:50%;" />
 
 <center><strong>图18：对结果数据提取的时间间隔的修改</strong></center>
 
